@@ -426,6 +426,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1478954649
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1478954651}
+  - component: {fileID: 1478954650}
+  m_Layer: 0
+  m_Name: _FPSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1478954650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478954649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99d06c07818a69a49aace182b5fd6b61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstPersonControllerPrefab: {fileID: 8380869727663635775, guid: 29ba5e15fc8cbbd459e44f51cd8897fc, type: 3}
+  spawnDelay: 0.1
+--- !u!4 &1478954651
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478954649}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.7939453, y: -10.55716, z: 0.1155529}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2056646053
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,11 +505,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a88cd974ca00d144e99d8957421b964b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 10
-  depth: 10
-  maxHeight: 5
+  width: 100
+  depth: 150
+  maxHeight: 3
   scale: 2
-  terrainMaterial: {fileID: 2100000, guid: 7feee881dfe3841eb8d95fa759ed5248, type: 2}
+  terrainMaterial: {fileID: 2100000, guid: e4b79b82efe8f8845a88bf2fc13ac5b2, type: 2}
 --- !u!64 &2056646055
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -566,11 +612,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35475d431d9c5924e946e991e87d052b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectPrefab: {fileID: 5802493876743242766, guid: f4c0b457110f39d4b9b370bd25aa7b8b, type: 3}
-  minObjects: 15
-  maxObjects: 20
-  minSize: 0.1
-  maxSize: 1
+  rocksCollection:
+    name: Rocks
+    prefabs:
+    - {fileID: 6565052969333632513, guid: 86a76148ee9e6ca448762ee130e85403, type: 3}
+    - {fileID: 4886381142656302640, guid: 229bd03a366fdd14c98e765e5878af10, type: 3}
+    - {fileID: 3879480085701860890, guid: 30e4977cea0fbbb47a321269c245bd97, type: 3}
+    - {fileID: 6426275792091374497, guid: 914f87068a8c5da42bca67e32a4be06d, type: 3}
+    - {fileID: 2867335223635135492, guid: 77ebfeb3263339842be063906414c64d, type: 3}
+    minSpawnCount: 30
+    maxSpawnCount: 50
+  plantsCollection:
+    name: Plants
+    prefabs:
+    - {fileID: 2695866806573727670, guid: 36d9e2e8dd42abf4094487a6b2fd378a, type: 3}
+    - {fileID: 4181461142939646407, guid: 1f55ff751cc30ab48901dd40c26d5a87, type: 3}
+    - {fileID: 4596686838144186794, guid: 3adab69335bfc104ca9a88edaac1b3bd, type: 3}
+    - {fileID: 2332898177236352095, guid: 3c56c5fb36c29ef43b0f3814af0ef5b9, type: 3}
+    - {fileID: 5914819975782044883, guid: 4959df84a95f54943ae785ecc2f28eb0, type: 3}
+    - {fileID: 2601760313303569021, guid: e8eb53e3434f4794c96ee29a88d5675e, type: 3}
+    - {fileID: 6570783064284073070, guid: 37b07b7f40795bf418ecb15d449f0a5d, type: 3}
+    minSpawnCount: 250
+    maxSpawnCount: 400
+  treesCollection:
+    name: Trees
+    prefabs:
+    - {fileID: 245949471226632542, guid: 61f41593be2490d4199889b1af6db49c, type: 3}
+    - {fileID: 3252217948689733905, guid: 2ba42661e8fab7844af8a27cc1289317, type: 3}
+    - {fileID: 6873425532061975298, guid: 9a518a107f92d354faadad3862bdc43b, type: 3}
+    - {fileID: 7176749741637798176, guid: 21c261389aacae94b8777d5debe5ece4, type: 3}
+    - {fileID: 5800806863424072816, guid: 932c4e6825203fa44b9fe8873b6d2fbe, type: 3}
+    minSpawnCount: 25
+    maxSpawnCount: 40
+  dustCollection:
+    name: Dust
+    prefabs:
+    - {fileID: 4357306349077704281, guid: 4a45045f190410c44854b3bd2ddde3b0, type: 3}
+    - {fileID: 5952610353777995276, guid: ed13011d527e3e348b82175d869e2ae7, type: 3}
+    - {fileID: 1799718406811471257, guid: d476203bf361c434092351ca44ea1db1, type: 3}
+    - {fileID: 5792850885742417215, guid: 5dfba6bc1126a8e4c8a642d7f738c406, type: 3}
+    - {fileID: 8421247747900842288, guid: 31b3bf8aa13e96a458f7e1d3a97efb64, type: 3}
+    - {fileID: 2215580098650967772, guid: 985575ca9bcd8bc4895e57cf68ce27f9, type: 3}
+    - {fileID: 5817625847683231186, guid: 75bef1545ae50154db0b381d85bdc178, type: 3}
+    - {fileID: 6415024203686407023, guid: 497d47d82c802e44281af0277f4ec04c, type: 3}
+    minSpawnCount: 20
+    maxSpawnCount: 40
+  spawnDelay: 0.1
+  overlapCheckRadius: 0.5
+  maxSpawnAttempts: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -579,3 +668,4 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 2056646058}
+  - {fileID: 1478954651}

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: be44e85c500499644a93ad79659a0a0b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 217398
+  packageName: Environment Pack - Desert
+  packageVersion: 1.0.1
+  assetPath: Assets/CrudoInteractive/EnvironmentPackDesert/EnvironmnetPackDesert_textures/Soils/Layer_Soil03.terrainlayer
+  uploadId: 492106

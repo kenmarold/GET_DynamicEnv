@@ -1,15 +1,29 @@
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class RandomObjectSpawner : MonoBehaviour
 {
-    public GameObject objectPrefab; // Assign a sphere prefab in the Inspector
-    public int minObjects = 15;
-    public int maxObjects = 20;
-    public float minSize = 0.1f;
-    public float maxSize = 1f;
+    [System.Serializable]
+    public class ObjectCollection
+    {
+        public string name;
+        public List<GameObject> prefabs = new List<GameObject>();
+        public int minSpawnCount;
+        public int maxSpawnCount;
+    }
+
+    public ObjectCollection rocksCollection = new ObjectCollection { name = "Rocks" };
+    public ObjectCollection plantsCollection = new ObjectCollection { name = "Plants" };
+    public ObjectCollection treesCollection = new ObjectCollection { name = "Trees" };
+    public ObjectCollection dustCollection = new ObjectCollection { name = "Dust" }; // New Dust Collection
+
+    public float spawnDelay = 0.1f;
+    public float overlapCheckRadius = 0.5f;
+    public int maxSpawnAttempts = 100;
 
     private ProceduralTerrain terrain;
+    private List<Vector3> usedPositions = new List<Vector3>();
 
     void Start()
     {
@@ -17,52 +31,101 @@ public class RandomObjectSpawner : MonoBehaviour
 
         if (terrain == null)
         {
-            Debug.LogError("No ProceduralTerrain script found!");
+            Debug.LogError("ProceduralTerrain script not found!");
             return;
         }
 
-        if (objectPrefab == null)
-        {
-            Debug.LogError("Assign a prefab in the Inspector!");
-            return;
-        }
-
-        // Wait for the terrain to fully generate
-        StartCoroutine(SpawnObjectsAfterDelay());
+        StartCoroutine(SpawnAllObjectsAfterDelay());
     }
 
-    IEnumerator SpawnObjectsAfterDelay()
+    IEnumerator SpawnAllObjectsAfterDelay()
     {
-        yield return new WaitForSeconds(0.1f); // Short delay to ensure mesh is generated
+        yield return new WaitForSeconds(spawnDelay);
 
-        int objectCount = Random.Range(minObjects, maxObjects + 1);
+        SpawnObjects(rocksCollection);
+        SpawnObjects(plantsCollection);
+        SpawnObjects(treesCollection);
+        SpawnDust(dustCollection); // Call to spawn dust
+    }
 
-        for (int i = 0; i < objectCount; i++)
+    void SpawnObjects(ObjectCollection collection)
+    {
+        int spawnCount = Random.Range(collection.minSpawnCount, collection.maxSpawnCount + 1);
+
+        for (int i = 0; i < spawnCount; i++)
         {
-            Vector3 spawnPosition = GetRandomTerrainPosition();
-            GameObject newObj = Instantiate(objectPrefab, spawnPosition, Quaternion.identity);
+            GameObject prefab = collection.prefabs[Random.Range(0, collection.prefabs.Count)];
+            Vector3 spawnPosition;
 
-            float randomScale = Random.Range(minSize, maxSize);
-            newObj.transform.localScale = Vector3.one * randomScale;
+            int attempts = 0;
+            do
+            {
+                spawnPosition = GetRandomTerrainPosition();
+                attempts++;
+            } while (IsOverlapping(spawnPosition) && attempts < maxSpawnAttempts);
+
+            if (attempts >= maxSpawnAttempts)
+            {
+                Debug.LogWarning($"Could not find non-overlapping position for {prefab.name} after {maxSpawnAttempts} attempts.");
+                continue;
+            }
+
+            Instantiate(prefab, spawnPosition, Quaternion.identity);
+            usedPositions.Add(spawnPosition);
+        }
+    }
+
+    void SpawnDust(ObjectCollection collection)
+    {
+        int spawnCount = Random.Range(collection.minSpawnCount, collection.maxSpawnCount + 1);
+
+        for (int i = 0; i < spawnCount; i++)
+        {
+            GameObject dustPrefab = collection.prefabs[Random.Range(0, collection.prefabs.Count)];
+            Vector3 spawnPosition;
+
+            int attempts = 0;
+            do
+            {
+                spawnPosition = GetRandomTerrainPosition();
+                attempts++;
+            } while (IsOverlapping(spawnPosition) && attempts < maxSpawnAttempts);
+
+            if (attempts >= maxSpawnAttempts)
+            {
+                Debug.LogWarning($"Could not find non-overlapping position for {dustPrefab.name} after {maxSpawnAttempts} attempts.");
+                continue;
+            }
+
+            Instantiate(dustPrefab, spawnPosition, Quaternion.identity);
+            usedPositions.Add(spawnPosition);
         }
     }
 
     Vector3 GetRandomTerrainPosition()
     {
-        if (terrain == null) return Vector3.zero;
-
         int width = terrain.width;
         int depth = terrain.depth;
         Vector3[] vertices = terrain.GetComponent<MeshFilter>().mesh.vertices;
 
-        // Pick a random (x, z) position within the terrain bounds
         int randomX = Random.Range(0, width);
         int randomZ = Random.Range(0, depth);
 
-        // Find the corresponding vertex to get the terrain height
         int vertexIndex = randomZ * (width + 1) + randomX;
         float terrainHeight = vertices[vertexIndex].y;
 
         return new Vector3(randomX, terrainHeight, randomZ);
+    }
+
+    bool IsOverlapping(Vector3 position)
+    {
+        foreach (var usedPos in usedPositions)
+        {
+            if (Vector3.Distance(position, usedPos) < overlapCheckRadius)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

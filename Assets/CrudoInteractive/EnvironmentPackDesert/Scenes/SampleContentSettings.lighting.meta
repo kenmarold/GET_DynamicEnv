@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9a4a40ca13306394fa8ac3cacf95b056
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 217398
+  packageName: Environment Pack - Desert
+  packageVersion: 1.0.1
+  assetPath: Assets/CrudoInteractive/EnvironmentPackDesert/Scenes/SampleContentSettings.lighting
+  uploadId: 492106
